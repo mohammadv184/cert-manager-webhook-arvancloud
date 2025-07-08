@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_CLI_EXPERIMENTAL: enabled
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - run: git fetch --force --tags
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '>=1.20.0'
+          cache: true
+      - uses: docker/setup-buildx-action@v2
+      - name: setup-snapcraft
+        run: |
+          sudo apt-get update
+          sudo apt-get -yq --no-install-suggests --no-install-recommends install snapcraft
+      - name: dockerhub-login
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: ghcr-login
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: snapcraft-login
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: snapcraft login --with <(echo "${{ secrets.SNAPCRAFT_LOGIN }}")
+      #      it's commented due to the bug in betteralig -apply. ref: https://github.com/dkorunic/betteralign/issues/4
+      #      - name: sort-structs # sorting structs is a best-practice to improve memory usage and performance by reducing the padding between fields
+      #        run: go run github.com/dkorunic/betteralign/cmd/betteralign@latest -apply ./...
+      - name: mod-download
+        run: |
+          go mod vendor
+      - uses: goreleaser/goreleaser-action@v4
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean --skip-validate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.7.0
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - uses: actions/upload-artifact@v3
+        with:
+          name: release-artifacts
+          path: |
+            . 
+            !./dist

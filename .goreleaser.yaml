@@ -1,0 +1,91 @@
+version: 2
+project_name: cert-manager-webhook-arvancloud
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - windows
+      - linux
+    goarch:
+      - amd64
+      - arm64
+      - arm
+      - 386
+      - ppc64le
+      - s390x
+      - mips64
+      - mips64le
+      - riscv64
+      - loong64
+#    main: ./.
+    binary: webhook
+    ldflags: -s -w -X main.Version={{.Version}} -X main.Commit={{.ShortCommit}} -X main.Date={{.Date}}
+release:
+  github:
+    owner: mohammadv184
+    name: cert-manager-webhook-arvancloud
+gomod:
+  proxy: true
+
+checksum:
+  name_template: '{{ .ProjectName }}-{{ .Version }}-checksums.txt'
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs'
+      - '^tests'
+
+dockers:
+  - image_templates:
+      - mohammadv184/cert-manager-webhook-arvancloud:{{ .Tag }}-amd64
+      - ghcr.io/mohammadv184/cert-manager-webhook-arvancloud:{{ .Tag }}-amd64
+    goos: linux
+    goarch: amd64
+    dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.version={{ .Version }}"
+      - "--label=org.opencontainers.image.name={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.description=A cert-manager dns01 challenge solver for Arvancloud DNS"
+      - "--label=org.opencontainers.image.source={{ .GitURL }}"
+      - "--label=org.opencontainers.image.licenses=MIT"
+      - "--platform=linux/amd64"
+  - image_templates:
+      - mohammadv184/cert-manager-webhook-arvancloud:{{ .Tag }}-arm64
+      - ghcr.io/mohammadv184/cert-manager-webhook-arvancloud:{{ .Tag }}-arm64
+    goos: linux
+    goarch: arm64
+    dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.version={{ .Version }}"
+      - "--label=org.opencontainers.image.name={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.description=A cert-manager dns01 challenge solver for Arvancloud DNS"
+      - "--label=org.opencontainers.image.source={{ .GitURL }}"
+      - "--label=org.opencontainers.image.licenses=MIT"
+      - "--platform=linux/arm64"
+
+docker_manifests:
+  - name_template: mohammadv184/cert-manager-webhook-arvancloud:{{ .Tag }}
+    image_templates:
+      - mohammadv184/cert-manager-webhook-arvancloud:{{ .Tag }}-amd64
+      - mohammadv184/cert-manager-webhook-arvancloud:{{ .Tag }}-arm64
+  - name_template: ghcr.io/mohammadv184/cert-manager-webhook-arvancloud:{{ .Tag }}
+    image_templates:
+      - ghcr.io/mohammadv184/cert-manager-webhook-arvancloud:{{ .Tag }}-amd64
+      - ghcr.io/mohammadv184/cert-manager-webhook-arvancloud:{{ .Tag }}-arm64
+  - name_template: mohammadv184/cert-manager-webhook-arvancloud:latest
+    image_templates:
+      - mohammadv184/cert-manager-webhook-arvancloud:{{ .Tag }}-amd64
+      - mohammadv184/cert-manager-webhook-arvancloud:{{ .Tag }}-arm64
+  - name_template: ghcr.io/mohammadv184/cert-manager-webhook-arvancloud:latest
+    image_templates:
+      - ghcr.io/mohammadv184/cert-manager-webhook-arvancloud:{{ .Tag }}-amd64
+      - ghcr.io/mohammadv184/cert-manager-webhook-arvancloud:{{ .Tag }}-arm64
