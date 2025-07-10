@@ -3,6 +3,30 @@ entries:
   cert-manager-webhook-arvancloud:
   - apiVersion: v1
     appVersion: 0.1.0
+    created: "2025-07-10T12:13:02.366531466Z"
+    description: A Helm chart for ArvanCloud DNS validation webhook for cert-manager
+    digest: 73a982978eb135e96b00bb9c7023af89eef595b392a81d3b9efe94d0e08dfa77
+    home: https://github.com/mohammadv184/cert-manager-webhook-arvancloud
+    icon: https://mohammad-abbasi.me/arvan-logo.png
+    keywords:
+    - cert-manager
+    - arvancloud
+    - webhook
+    - dns
+    - validation
+    maintainers:
+    - email: mohammad.v184@gmail.com
+      name: Mohammad Abbasi
+      url: https://mohammad-abbasi.me
+    name: cert-manager-webhook-arvancloud
+    sources:
+    - https://github.com/mohammadv184/cert-manager-webhook-arvancloud
+    type: application
+    urls:
+    - https://github.com/mohammadv184/cert-manager-webhook-arvancloud/releases/download/cert-manager-webhook-arvancloud-0.1.1/cert-manager-webhook-arvancloud-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v1
+    appVersion: 0.1.0
     created: "2025-07-09T00:48:15.062651324Z"
     description: A Helm chart for ArvanCloud DNS validation webhook for cert-manager
     digest: 31f63204f921f4a36b0b27080b24b3ae8c1bfd545c7f6b6a5aa3943f88580c75
@@ -25,4 +49,4 @@ entries:
     urls:
     - https://github.com/mohammadv184/cert-manager-webhook-arvancloud/releases/download/cert-manager-webhook-arvancloud-0.1.0/cert-manager-webhook-arvancloud-0.1.0.tgz
     version: 0.1.0
-generated: "2025-07-09T00:48:15.062656353Z"
+generated: "2025-07-10T12:13:02.366539862Z"
