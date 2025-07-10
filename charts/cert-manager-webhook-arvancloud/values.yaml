@@ -5,7 +5,7 @@
 # solve the DNS01 challenge.
 # This group name should be **unique**, hence using your own company's domain
 # here is recommended.
-groupName: acme.arvancloud.com
+groupName: acme.arvancloud.ir
 
 # Number of replicas
 replicaCount: 1
@@ -15,7 +15,7 @@ certManager:
   serviceAccountName: cert-manager
 
 image:
-  repository: mohammadv184/cert-manager-webhook-arvancloud
+  repository: ghcr.io/mohammadv184/cert-manager-webhook-arvancloud
   tag: latest
   pullPolicy: IfNotPresent
 
@@ -26,13 +26,7 @@ service:
   type: ClusterIP
   port: 443
 
-resources:
-  requests:
-    cpu: 100m
-    memory: 128Mi
-  limits:
-    cpu: 500m
-    memory: 256Mi
+resources: {}
 
 nodeSelector: {}
 

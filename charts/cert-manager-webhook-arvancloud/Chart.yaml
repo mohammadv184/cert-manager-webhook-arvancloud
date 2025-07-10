@@ -3,7 +3,7 @@ appVersion: "0.1.0"
 description: A Helm chart for ArvanCloud DNS validation webhook for cert-manager
 name: cert-manager-webhook-arvancloud
 type: application
-version: 0.1.0
+version: 0.1.1
 home: "https://github.com/mohammadv184/cert-manager-webhook-arvancloud"
 sources:
   - "https://github.com/mohammadv184/cert-manager-webhook-arvancloud"
